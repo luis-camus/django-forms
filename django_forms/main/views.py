@@ -1,16 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import EmployeeForm
-from .models import Employee
 def home(request):
     return render(request, 'main/home.html')
 
 def employee_data(request):
 
-    if request.method == 'POST':
+    if request.method == 'POST': #checks the method of the request, if it's POST then it would process post request
         form = EmployeeForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+        if form.is_valid(): # this line checks if form is valid
+            form.save() #if the form's valid it's gonna call the save method to save it to your database
+
+             
             # Below this line is how it looks like before if you were not to declare a Meta in forms.py file.
             
             # Declaring a Meta in your forms.py file will save you alot of lines here in views.py file
@@ -39,6 +40,11 @@ def employee_data(request):
             #     joined_date=joined_date)
             # emp.save()
             return HttpResponse("data is saved in database")
-    form = EmployeeForm()
+        else:
+            pass
+    form = EmployeeForm() 
+
+# if the request is GET and not post it would just return the line below
+# that would render the web page consisting the form cause we passed in the form to it
     return render(request, 'main/employee.html', {'form': form})
 # Create your views here.
